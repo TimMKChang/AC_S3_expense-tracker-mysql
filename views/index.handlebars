@@ -97,10 +97,10 @@
             <div class="col-2 record-date">{{this.date}}</div>
             <div class="col-1">$<span class="record-amount">{{this.amount}}</span></div>
             <div class="col-auto">
-              <a href="/record/{{this._id}}/edit" class="btn btn-secondary">Edit</a>
+              <a href="/record/{{this.id}}/edit" class="btn btn-secondary">Edit</a>
             </div>
             <div class="col-auto">
-              <form action="/record/{{this._id}}?_method=DELETE" method="POST"
+              <form action="/record/{{this.id}}?_method=DELETE" method="POST"
                 onsubmit="doAlert.delete_alert(this); return false;">
                 <button type="submit" class="btn btn-danger">Delete</button>
               </form>

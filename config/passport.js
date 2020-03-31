@@ -1,14 +1,14 @@
 const LocalStrategy = require('passport-local').Strategy
 const FacebookStrategy = require('passport-facebook').Strategy
 const GoogleStrategy = require('passport-google-oauth20').Strategy
-const mongoose = require('mongoose')
-const User = require('../models/user')
+const db = require('../models')
+const User = db.User
 const bcrypt = require('bcryptjs')
 
 module.exports = passport => {
   passport.use(
     new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
-      User.findOne({ email: email })
+      User.findOne({ where: { email: email } })
         .then(user => {
           if (!user) {
             return done(null, false, { message: 'The email is not registered!' })
@@ -37,7 +37,7 @@ module.exports = passport => {
   },
     function (accessToken, refreshToken, profile, done) {
 
-      User.findOne({ email: profile._json.email })
+      User.findOne({ where: { email: profile._json.email } })
         .then(user => {
           if (!user) {
             const randomPassword = Math.random().toString(36).slice(-8)
@@ -70,7 +70,7 @@ module.exports = passport => {
     callbackURL: process.env.GOOGLE_CALLBACK
   },
     function (accessToken, refreshToken, profile, done) {
-      User.findOne({ email: profile._json.email })
+      User.findOne({ where: { email: profile._json.email } })
         .then(user => {
           if (!user) {
             const randomPassword = Math.random().toString(36).slice(-8)
@@ -101,11 +101,10 @@ module.exports = passport => {
   })
 
   passport.deserializeUser((id, done) => {
-    User.findById(id)
-      .lean()
-      .exec((err, user) => {
-        done(err, user)
-      })
+    User.findByPk(id).then((user) => {
+      user = user.get()
+      done(null, user)
+    })
   })
 
 }

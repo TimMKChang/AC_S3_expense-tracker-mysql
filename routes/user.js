@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const User = require('../models/user')
+const db = require('../models')
+const User = db.User
 const passport = require('passport')
 const bcrypt = require('bcryptjs')
 
@@ -57,7 +58,7 @@ router.post('/register', (req, res) => {
     })
   }
 
-  User.findOne({ email: email })
+  User.findOne({ where: { email: email } })
     .then(user => {
       if (user) {
 

@@ -12,14 +12,15 @@ app.use(bodyParser.urlencoded({ extended: true }))
 const methodOverride = require('method-override')
 app.use(methodOverride('_method'))
 
+const db = require('./models')
+const Record = db.Record
+const User = db.User
+
 const session = require('express-session')
-const MongoStore = require('connect-mongo')(session)
 app.use(session({
   secret: 'restaurant list secret',
   resave: false,
-  saveUninitialized: true,
-  store: new MongoStore({ url: process.env.MONGODB_URI || 'mongodb://localhost/sessiondb' }),
-  cookie: { maxAge: 1000 * 60 * 60 * 24 } // one day
+  saveUninitialized: true
 }))
 
 const passport = require('passport')
@@ -28,16 +29,6 @@ app.use(passport.session())
 
 const flash = require('connect-flash')
 app.use(flash())
-
-const mongoose = require('mongoose')
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/AC_S3_expense_tracker', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
-const db = mongoose.connection
-db.on('error', () => {
-  console.log('mongodb error')
-})
-db.once('open', () => {
-  console.log('mongodb connected')
-})
 
 const exphbs = require('express-handlebars')
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
@@ -54,9 +45,6 @@ app.use((req, res, next) => {
   res.locals.warning_msg = req.flash('warning_msg')
   next()
 })
-
-// const { authenticated } = require('./config/auth')
-// app.all('*', authenticated)
 
 // routes
 app.use('/', require('./routes/home'))

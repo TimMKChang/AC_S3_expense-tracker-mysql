@@ -1,15 +1,16 @@
-# Expense Tracker [Try Now!](https://mkc-expense-tracker.herokuapp.com)
+# Expense Tracker
 Built by 
 - [Node.js](https://nodejs.org/en/)
 - [express](https://www.npmjs.com/package/express)
 - [express-handlebars](https://www.npmjs.com/package/express-handlebars)
 - [body-parser](https://www.npmjs.com/package/body-parser)
-- [MongoDB](https://www.mongodb.com/)
-- [Mongoose](https://www.npmjs.com/package/mongoose)
 - [method-override](https://www.npmjs.com/package/method-override)
 - [Passport](https://www.npmjs.com/package/passport)
 - [bcryptjs](https://www.npmjs.com/package/bcryptjs)
 - [dotenv](https://www.npmjs.com/package/dotenv)
+- [mysql2](https://www.npmjs.com/package/mysql2)
+- [sequelize](https://www.npmjs.com/package/sequelize)
+- [sequelize-cli](https://www.npmjs.com/package/sequelize-cli)
 
 ## Project Preview
 #### Login
@@ -19,11 +20,12 @@ Built by
 ![Project Preview](/public/image/expense-tracker_preview_3.PNG)
 
 ## Features
+- MySQL
 - CRUD: Create, Read, Update, and Delete
 - Alert when Delete
+- Soft delete in database
 - Search
 - Sort
-- Record & User seeder
 - Passport
 - bcrypt
 - Facebook login & Google login
@@ -51,7 +53,8 @@ Built by
 
 ## Installing
 1. clone the project
->git clone https://github.com/TimMKChang/AC_S3_expense-tracker.git
+>git clone https://github.com/TimMKChang/AC_S3_expense-tracker-mysql.git
+
 2. install packages
 >npm install
 

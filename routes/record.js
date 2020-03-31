@@ -1,7 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const Record = require('../models/record')
+const db = require('../models')
+const User = db.User
+const Record = db.Record
 const hasSpecialCharacters = require('../public/javascripts/hasSpecialCharacters')
+const Sequelize = require("sequelize")
+const { Op } = require("sequelize")
 
 // '/restaurants/*' all should be authenticated
 const { authenticated } = require('../config/auth')
@@ -12,17 +16,34 @@ router.get('/', (req, res) => {
 
   const months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
   const month = req.query.month || ''
-  let _regex_date = new RegExp('');
+  let _regex_date = '.'
   if (month) {
-    _regex_date = new RegExp(`[0-9]{4}-${month}-[0-9]{2}`);
+    _regex_date = `[0-9]{4}-${month}-[0-9]{2}`
   }
 
   const category = req.query.category || ''
-  const _regex_category = new RegExp(category);
+  let _regex_category = '.'
+  if (category) {
+    _regex_category = category
+  }
 
-  Record.find({ userId: req.user._id, date: { $regex: _regex_date }, category: { $regex: _regex_category } })
-    .sort({ date: 'desc' })
-    .lean()
+  User.findByPk(req.user.id)
+    .then((user) => {
+      if (!user) throw new Error("user not found")
+      return Record.findAll({
+        raw: true,
+        nest: true,
+        where: {
+          userId: req.user.id,
+          date: { [Op.regexp]: _regex_date },
+          category: { [Op.regexp]: _regex_category },
+          deleted_at: '0'
+        },
+        order: [
+          ['date', 'DESC']
+        ]
+      })
+    })
     .then(records => {
 
       // get total amount
@@ -82,21 +103,26 @@ router.post('/', (req, res) => {
     date: req.body.date,
     amount: req.body.amount,
     merchant: req.body.merchant,
-    userId: req.user._id
+    UserId: req.user.id
   })
 
-  record.save(err => {
-    if (err) {
-      return console.error(err)
-    }
-    return res.redirect('/record')
-  })
+  record.save()
+    .then(() => {
+      return res.redirect('/record')
+    })
+    .catch(err => {
+      console.log(err)
+    })
 
 })
 // read update page
 router.get('/:id/edit', (req, res) => {
-  Record.findOne({ _id: req.params.id, userId: req.user._id })
-    .lean()
+
+  User.findByPk(req.user.id)
+    .then((user) => {
+      if (!user) throw new Error("user not found")
+      return Record.findOne({ where: { id: req.params.id, UserId: req.user.id } })
+    })
     .then(record => {
 
       // category selected
@@ -107,7 +133,7 @@ router.get('/:id/edit', (req, res) => {
         }
       })
 
-      return res.render('edit', { record })
+      return res.render('edit', { record: record.get() })
     })
     .catch(err => {
       return console.error(err)
@@ -136,7 +162,7 @@ router.put('/:id', (req, res) => {
     return res.render('new', { newRecord, newErrorMsg })
   }
 
-  Record.findOne({ _id: req.params.id, userId: req.user._id })
+  Record.findOne({ where: { id: req.params.id, UserId: req.user.id } })
     .then(record => {
       record.name = req.body.name
       record.category = req.body.category
@@ -144,27 +170,25 @@ router.put('/:id', (req, res) => {
       record.amount = req.body.amount
       record.merchant = req.body.merchant
 
-      record.save(err => {
-        if (err) {
-          return console.error(err)
-        }
-        return res.redirect('/record')
-      })
+      return record.save()
+    })
+    .then(record => {
+      return res.redirect('/record')
     })
     .catch(err => {
       return console.error(err)
     })
+
 })
 // delete
 router.delete('/:id', (req, res) => {
-  Record.findOne({ _id: req.params.id, userId: req.user._id })
+  Record.findOne({ where: { id: req.params.id, UserId: req.user.id } })
     .then(record => {
-      record.remove(err => {
-        if (err) {
-          return console.error(err)
-        }
-        return res.redirect('/record')
-      })
+      record.deleted_at = new Date().toString()
+      return record.save()
+    })
+    .then(record => {
+      return res.redirect('/record')
     })
     .catch(err => {
       return console.error(err)
