@@ -1,0 +1,100 @@
+{
+  "results": [
+    {
+      "id": 1,
+      "name": "cabinet",
+      "category": "Housing",
+      "amount": "1000",
+      "date": "2019-01-15",
+      "merchant": "Ekea"
+    },
+    {
+      "id": 2,
+      "name": "MRT ticket",
+      "category": "Transportation",
+      "amount": "1280",
+      "date": "2019-03-06",
+      "merchant": "MRT"
+    },
+    {
+      "id": 3,
+      "name": "home console",
+      "category": "Entertainment",
+      "amount": "9780",
+      "date": "2019-06-24",
+      "merchant": "Xwitch"
+    },
+    {
+      "id": 4,
+      "name": "pizza",
+      "category": "Food",
+      "amount": "599",
+      "date": "2019-10-12",
+      "merchant": "Pizza Hot"
+    },
+    {
+      "id": 5,
+      "name": "book",
+      "category": "Others",
+      "amount": "840",
+      "date": "2019-12-03",
+      "merchant": "Book Store"
+    },
+    {
+      "id": 6,
+      "name": "drink",
+      "category": "Food",
+      "amount": "55",
+      "date": "2020-01-05",
+      "merchant": "ComeBy"
+    },
+    {
+      "id": 7,
+      "name": "dining table",
+      "category": "Housing",
+      "amount": "1399",
+      "date": "2020-01-25",
+      "merchant": "Ekea"
+    },
+    {
+      "id": 8,
+      "name": "sofa",
+      "category": "Housing",
+      "amount": "18500",
+      "date": "2020-01-27",
+      "merchant": "Working Home"
+    },
+    {
+      "id": 9,
+      "name": "taxi",
+      "category": "Transportation",
+      "amount": "235",
+      "date": "2020-02-06",
+      "merchant": "Taiwan Big Team"
+    },
+    {
+      "id": 10,
+      "name": "movie",
+      "category": "Entertainment",
+      "amount": "250",
+      "date": "2020-03-09",
+      "merchant": "Shin Theater"
+    },
+    {
+      "id": 11,
+      "name": "jacket",
+      "category": "Others",
+      "amount": "2150",
+      "date": "2020-01-13",
+      "merchant": "UNIQLLO"
+    },
+    {
+      "id": 12,
+      "name": "bread",
+      "category": "Food",
+      "amount": "250",
+      "date": "2020-01-05",
+      "merchant": "Fat Master"
+    }
+  ]
+}

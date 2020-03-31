@@ -1,0 +1,42 @@
+<div class="container my-5 bg-light p-5" style="border-radius: 50px;">
+
+  <form action="/record/{{record._id}}?_method=PUT" method="POST">
+
+    <label for="merchant">
+      <h4>Merchant</h4>
+    </label>
+    <input type="text" class="form-control mb-3" id="merchant" name="merchant" value="{{record.merchant}}" required>
+
+    <label for="name">
+      <h4>Item Name</h4>
+    </label>
+    <input type="text" class="form-control mb-3" id="name" name="name" value="{{record.name}}" required>
+
+    <label for="date">
+      <h4>Date</h4>
+    </label>
+    <input type="date" class="form-control mb-3" id="date" name="date" value="{{record.date}}" required>
+
+    <label for="category">
+      <h4>Category</h4>
+    </label>
+    <select class="form-control mb-3" id="category" name="category">
+      <option value="Housing" {{#if record.optionHousing}}selected="selected" {{/if}}>Housing</option>
+      <option value="Transportation" {{#if record.optionTransportation}}selected="selected" {{/if}}>Transportation
+      </option>
+      <option value="Entertainment" {{#if record.optionEntertainment}}selected="selected" {{/if}}>Entertainment</option>
+      <option value="Food" {{#if record.optionFood}}selected="selected" {{/if}}>Food</option>
+      <option value="Others" {{#if record.optionOthers}}selected="selected" {{/if}}>Others</option>
+    </select>
+
+    <label for="amount">
+      <h4>Amount</h4>
+    </label>
+    <input type="number" step="1" min="0" class="form-control mb-3" id="amount" name="amount" value="{{record.amount}}"
+      required>
+
+    <button type="submit" class="btn btn-secondary my-3">Edit</button>
+
+  </form>
+
+</div>

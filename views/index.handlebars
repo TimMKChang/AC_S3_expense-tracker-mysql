@@ -1,0 +1,118 @@
+<div class="container mt-3">
+  <div class="row">
+    <div class="col-12">
+
+      <div class="row mb-3">
+
+        <div class="col-6 pt-3">
+
+          <h1>Welcome back {{user.name}}!</h1>
+
+          <div class="row my-5">
+
+            <div class="dropdown mb-2 col-6">
+              <button class="btn btn-primary btn-block dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Month {{#if month}} : {{month}}{{/if}}
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/record{{#if category}}?category={{category}}{{/if}}">All</a>
+                {{#each months}}
+                <a class="dropdown-item"
+                  href="/record?month={{this}}{{#if ../category}}&category={{../category}}{{/if}}">{{this}}</a>
+                {{/each}}
+              </div>
+            </div>
+
+            <div class="dropdown mb-2 col-6">
+              <button class="btn btn-primary btn-block dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Category {{#if category}} : {{category}}{{/if}}
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/record{{#if month}}?month={{month}}{{/if}}">All</a>
+                <a class="dropdown-item" href="/record?{{#if month}}month={{month}}&{{/if}}category=Housing"><i
+                    class="fas fa-home mr-2"></i>Housing</a>
+                <a class="dropdown-item" href="/record?{{#if month}}month={{month}}&{{/if}}category=Transportation"><i
+                    class="fas fa-shuttle-van mr-2"></i>Transportation</a>
+                <a class="dropdown-item" href="/record?{{#if month}}month={{month}}&{{/if}}category=Entertainment"><i
+                    class="fas fa-grin-beam mr-2"></i>Entertainment</a>
+                <a class="dropdown-item" href="/record?{{#if month}}month={{month}}&{{/if}}category=Food"><i
+                    class="fas fa-utensils mr-2"></i>Food</a>
+                <a class="dropdown-item" href="/record?{{#if month}}month={{month}}&{{/if}}category=Others"><i
+                    class="fas fa-pen mr-2"></i>Others</a>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row my-5">
+            <div class="col-6" style="font-size: 2rem;">Total Amount:</div>
+            <div class="col-6 text-danger" style="font-size: 4rem;">${{totalAmount}}</div>
+          </div>
+
+          <a href=" /record/new" class="btn btn-info mb-2">Create Expense</a>
+
+        </div>
+
+        <div class="col-6"><canvas id="recordChart" width="400" height="400"></canvas></div>
+
+      </div>
+
+      <ul class="list-group d-flex">
+
+        <li class="list-group-item" style="order: -1;">
+          <div class="row" style="font-size: 1.2rem;">
+
+            <div class="col-1">
+              <div class="btn btn-primary p-1" id="title-category" style="margin-left: -6px;">
+                <i class="far fa-arrow-alt-circle-up" style="font-size: 1.8rem;"></i>
+              </div>
+            </div>
+            <div class="col-2">Merchant</div>
+            <div class="col-2">Item</div>
+            <div class="col-2">
+              <div class="btn btn-primary" id="title-date">
+                <span class="mr-2">Date</span>
+                <i class="fas fa-arrow-up"></i>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="btn btn-primary" id="title-amount">
+                <span class="mr-2">$</span>
+                <i class="fas fa-arrow-up"></i>
+              </div>
+            </div>
+
+          </div>
+        </li>
+
+        {{#each records}}
+        <li class="list-group-item">
+          <div class="row" style="font-size: 1.3rem;">
+
+            <div class="col-1 category" data-category="{{this.category}}"><i class="{{this.iconClass}}"></i></div>
+            <div class="col-2" style="word-wrap: break-word;">{{this.merchant}}</div>
+            <div class="col-2" style="word-wrap: break-word;">{{this.name}}</div>
+            <div class="col-2 record-date">{{this.date}}</div>
+            <div class="col-1">$<span class="record-amount">{{this.amount}}</span></div>
+            <div class="col-auto">
+              <a href="/record/{{this._id}}/edit" class="btn btn-secondary">Edit</a>
+            </div>
+            <div class="col-auto">
+              <form action="/record/{{this._id}}?_method=DELETE" method="POST"
+                onsubmit="doAlert.delete_alert(this); return false;">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </div>
+
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+<a id="toTop" class="text-center" href="#navbar"><i id="toTop-icon" class="fas fa-angle-double-up"></i></a>
